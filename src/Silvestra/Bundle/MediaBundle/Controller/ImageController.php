@@ -49,7 +49,7 @@ class ImageController
     {
         $image = null;
 
-        if (null !== $filename = $request->get('filename', null)) {
+        if ($filename = $request->get('filename', null)) {
             $image = $this->imageManager->findByFilename($filename);
         }
 

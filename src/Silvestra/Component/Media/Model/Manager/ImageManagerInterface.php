@@ -25,6 +25,15 @@ interface ImageManagerInterface
     public function findByFilename($filename);
 
     /**
+     * Find temporary images.
+     *
+     * @param \DateTime $to
+     *
+     * @return array|ImageInterface[]
+     */
+    public function findTemporaryImages(\DateTime $to);
+
+    /**
      * Create new Image object.
      *
      * @return ImageInterface

@@ -20,6 +20,12 @@
             <argument type="service" id="silvestra_media.manager.image" />
         </service>
 
+        <service id="silvestra_media.image.manager.filesystem" class="Silvestra\Component\Media\Image\ImageFilesystemManager" public="true">
+            <argument type="service" id="silvestra_media.filesystem" />
+            <argument type="service" id="silvestra_media.manager.image" />
+            <argument type="service" id="logger" />
+        </service>
+
         <service id="silvestra_media.image.resizer.gd" class="Silvestra\Component\Media\Extension\Image\GdImageResizer" public="false">
             <argument type="service" id="silvestra_media.filesystem" />
             <argument type="service" id="silvestra_media.image.cache" />

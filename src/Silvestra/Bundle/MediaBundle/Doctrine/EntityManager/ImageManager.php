@@ -11,6 +11,7 @@
 
 namespace Silvestra\Bundle\MediaBundle\Doctrine\EntityManager;
 
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Silvestra\Component\Media\Model\ImageInterface;
@@ -53,6 +54,20 @@ class ImageManager extends BaseImageManager
     public function findByFilename($filename)
     {
         return $this->repository->findOneBy(array('filename' => $filename));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findTemporaryImages(\DateTime $to)
+    {
+        $qb = $this->repository->createQueryBuilder('i');
+
+        $qb->andWhere($qb->expr()->eq('i.temporary', true));
+        $qb->andWhere($qb->expr()->lte('i.updatedAt', ':to'))
+            ->setParameter('to', $to, Type::DATETIME);
+
+        return $qb->getQuery()->getResult();
     }
 
     /**

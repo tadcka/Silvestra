@@ -84,18 +84,25 @@ class ImageTransformer implements DataTransformerInterface
             return null;
         }
 
-        if ($this->preFilename && ($this->preFilename !== $filename)) {
-            $this->imageManager->remove($image);
+        if ($this->preFilename === $filename) {
+            $image->setTemporary(false);
+            $image->setUpdatedAt(new \DateTime());
+
+            return $image;
         }
 
-        $image = $this->imageManager->findByFilename($filename);
+        $image->setFilename($this->preFilename);
+        $image->setTemporary(true);
 
-        if (null === $image) {
+        $newImage = $this->imageManager->findByFilename($filename);
+
+        if (null === $newImage) {
             throw new TransformationFailedException();
         }
 
-        $image->setTemporary(false);
+        $newImage->setTemporary(false);
+        $newImage->setUpdatedAt(new \DateTime());
 
-        return $image;
+        return $newImage;
     }
 }
